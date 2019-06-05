@@ -1,12 +1,13 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { MatPaginator, MatSnackBar, PageEvent } from '@angular/material';
+import { constants } from "./../../models/constants";
+import { HttpClient } from "@angular/common/http";
+import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { FormControl } from "@angular/forms";
+import { MatPaginator, MatSnackBar, PageEvent } from "@angular/material";
 
-import { AuthorizationService } from '../../services/authorization.service';
-import { DataService } from '../../services/data.service';
-import { NotificationDialog } from '../notification-dialog/notification-dialog';
-import { Releases } from './../../models/releases';
+import { AuthorizationService } from "../../services/authorization.service";
+import { DataService } from "../../services/data.service";
+import { NotificationDialog } from "../notification-dialog/notification-dialog";
+import { Release } from "../../models/release";
 
 export interface Country {
   id: string;
@@ -22,18 +23,11 @@ export interface Country {
   encapsulation: ViewEncapsulation.None
 })
 export class HotReleasesComponent implements OnInit {
-  countries: Country[] = [
-    { id: "CH", value: "Switzerland" },
-    { id: "AT", value: "Austria" },
-    { id: "DE", value: "Germany" },
-    { id: "SE", value: "Sweden" },
-    { id: "NO", value: "Norway" },
-    { id: "US", value: "USA" }
-  ];
+  countries: Country[] = constants.countries;
 
   countryName: string;
   countrySelect = new FormControl();
-  countryIDSet;
+  countryIDSet: string;
   showSpinner: boolean = false;
 
   displayedColumns: string[] = [
@@ -44,11 +38,11 @@ export class HotReleasesComponent implements OnInit {
     "image"
   ];
 
-  dataSource: Releases;
-  length = 5;
-  pageNumber = 0;
-  pageSize = 5;
-  durationInSeconds = 3;
+  dataSource: Release;
+  length: number = 5;
+  pageNumber: number = 0;
+  pageSize: number = 5;
+  durationInSeconds: number = 3;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -71,11 +65,11 @@ export class HotReleasesComponent implements OnInit {
       this.getReleases(countryID);
     });
   }
-  getCountryName(id) {
+  getCountryName(id: string) {
     return this.countries.find(n => n.id === id).value;
   }
 
-  getReleases(country?, pagination?: PageEvent) {
+  getReleases(country?: string, pagination?: PageEvent) {
     let tempCountryID = country ? country : this.countryIDSet;
 
     this.showSpinner = true;
@@ -97,14 +91,14 @@ export class HotReleasesComponent implements OnInit {
     );
   }
 
-  msgPrompt(type?, message?) {
+  msgPrompt(type?: string, message?: string) {
     this.snackBar.openFromComponent(NotificationDialog, {
       duration: this.durationInSeconds * 1000,
       data: { type: type, msg: message }
     });
   }
 
-  setArtistName(name) {
+  setArtistName(name: string) {
     this.dataService.artistNameSet.next(name);
   }
 }

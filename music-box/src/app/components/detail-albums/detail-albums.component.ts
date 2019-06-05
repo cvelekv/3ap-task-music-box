@@ -1,11 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatPaginator, MatSnackBar, PageEvent } from '@angular/material';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, ViewChild } from "@angular/core";
+import {
+  MatDialog,
+  MatPaginator,
+  MatSnackBar,
+  PageEvent
+} from "@angular/material";
+import { ActivatedRoute, Router } from "@angular/router";
 
-import { Albums } from '../../models/albums';
-import { DataService } from '../../services/data.service';
-import { DialogComponent } from '../dialog/dialog.component';
-import { NotificationDialog } from '../notification-dialog/notification-dialog';
+import { Album } from "../../models/album";
+import { DataService } from "../../services/data.service";
+import { DialogComponent } from "../dialog/dialog.component";
+import { NotificationDialog } from "../notification-dialog/notification-dialog";
 
 @Component({
   selector: "app-detail-albums",
@@ -14,26 +19,22 @@ import { NotificationDialog } from '../notification-dialog/notification-dialog';
 })
 export class DetailAlbumsComponent implements OnInit {
   artistID: string;
-  albumObj;
-
   showSpinner: boolean = false;
-
   artistName: string;
   displayedColumns: string[] = ["name", "type", "contributors", "image"];
-  dataSource: Albums;
-  length = 5;
-  pageNumber = 0;
-  pageSize = 5;
+  dataSource: Album;
+  length: number = 5;
+  pageNumber: number = 0;
+  pageSize: number = 5;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  durationInSeconds = 3;
+  durationInSeconds: number = 3;
   private sub: any;
 
   constructor(
     private aRoute: ActivatedRoute,
     private dataService: DataService,
-    private router: Router,
     private snackBar: MatSnackBar,
     public dialog: MatDialog
   ) {}
@@ -45,14 +46,16 @@ export class DetailAlbumsComponent implements OnInit {
     });
     this.dataService.artistNameSet.subscribe(val => {
       this.artistName = val;
-      if (this.artistName) this.setStorage("artistName", this.artistName);
+      if (this.artistName) {
+        this.setItemToStorage("artistName", this.artistName);
+      }
     });
     if (!this.artistName) {
-      this.artistName = this.getStorage("artistName");
+      this.artistName = this.getItemFromStorage("artistName");
     }
   }
 
-  getAlbums(pagination?: PageEvent) {
+  getAlbums(pagination?: PageEvent): void {
     this.showSpinner = true;
 
     this.dataService.getAlbums(this.artistID, pagination).subscribe(
@@ -60,7 +63,7 @@ export class DetailAlbumsComponent implements OnInit {
         this.dataSource = res["items"];
         this.length = res["total"];
         this.showSpinner = false;
-        let notificationmsg = "There are " + this.length + " albums.";
+        let notificationmsg = `There are ${this.length} albums.`;
         if (pagination === undefined)
           this.msgPrompt("notification", notificationmsg);
       },
@@ -71,33 +74,32 @@ export class DetailAlbumsComponent implements OnInit {
     );
   }
 
-  setArtistName(name) {
+  setArtistName(name: string): void {
     this.dataService.artistNameSet.next(name);
   }
 
-  msgPrompt(type?, message?) {
+  msgPrompt(type?: string, message?: string): void {
     this.snackBar.openFromComponent(NotificationDialog, {
       duration: this.durationInSeconds * 1000,
       data: { type: type, msg: message }
     });
   }
 
-  setStorage(key, value) {
+  setItemToStorage(key: string, value: any): void {
     localStorage.setItem(key, value.toString());
   }
 
-  getStorage(key) {
+  getItemFromStorage(key: string): string {
     return localStorage.getItem(key);
   }
 
-  openAlbumTracks(album) {
+  openAlbumTracks(album: Album): void {
     this.showSpinner = true;
-    let albumObj;
 
     this.dataService.getAlbumTracks(album).subscribe(
       res => {
-        albumObj = res;
-        const dialogRef = this.dialog.open(DialogComponent, {
+        const albumObj = res;
+        this.dialog.open(DialogComponent, {
           width: "490px",
           autoFocus: false,
           data: {
@@ -106,7 +108,7 @@ export class DetailAlbumsComponent implements OnInit {
             albumName: album.name
           }
         });
-        dialogRef.afterClosed().subscribe(result => {});
+
         this.showSpinner = false;
       },
       err => {

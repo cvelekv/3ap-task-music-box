@@ -1,4 +1,4 @@
-export interface Releases {
+export interface Release {
   artist: string;
   name: string;
   type: string;

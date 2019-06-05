@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { Component } from "@angular/core";
+import { MatDialog } from "@angular/material";
 
-import { DialogComponent } from './components/dialog/dialog.component';
+import { DialogComponent } from "./components/dialog/dialog.component";
 
 @Component({
   selector: "app-root",
@@ -9,10 +9,9 @@ import { DialogComponent } from './components/dialog/dialog.component';
   styleUrls: ["./app.component.css"]
 })
 export class AppComponent {
-  title = "music-box";
-  isCollapsed = true;
+  isCollapsed: boolean = true;
 
-  favorites;
+  favorites: any = {};
 
   constructor(public dialog: MatDialog) {}
 
@@ -22,14 +21,18 @@ export class AppComponent {
 
   openFavorites() {
     let status: boolean;
-    let favoritesObj = localStorage.getItem("favoriteTracks");
+    const favoritesObj = localStorage.getItem("favoriteTracks");
     if (favoritesObj) {
       status = true;
-      this.favorites = JSON.parse(favoritesObj);
+      try {
+        this.favorites = JSON.parse(favoritesObj);
+      } catch (error) {
+        console.error("Error while parsing JSON");
+      }
     } else {
       status = false;
     }
-    const dialogRef = this.dialog.open(DialogComponent, {
+    this.dialog.open(DialogComponent, {
       width: "450px",
       autoFocus: false,
       data: {
@@ -38,6 +41,5 @@ export class AppComponent {
         noFavs: !status
       }
     });
-    dialogRef.afterClosed().subscribe(result => {});
   }
 }

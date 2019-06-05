@@ -1,10 +1,23 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { MatDialog, MatPaginator, MatSnackBar, PageEvent } from '@angular/material';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild
+} from "@angular/core";
+import {
+  MatDialog,
+  MatPaginator,
+  MatSnackBar,
+  PageEvent,
+  MatTableDataSource
+} from "@angular/material";
 
-import { Artists } from '../../models/artists';
-import { DialogComponent } from '../dialog/dialog.component';
-import { NotificationDialog } from '../notification-dialog/notification-dialog';
-import { DataService } from './../../services/data.service';
+import { Artist } from "../../models/artist";
+import { DialogComponent } from "../dialog/dialog.component";
+import { NotificationDialog } from "../notification-dialog/notification-dialog";
+import { DataService } from "./../../services/data.service";
 
 @Component({
   selector: "result-component",
@@ -12,35 +25,35 @@ import { DataService } from './../../services/data.service';
   styleUrls: ["./result.component.css"]
 })
 export class ResultComponent implements OnInit {
-  ELEMENT_DATA: Artists[] = [];
+  artistData: Artist[] = [];
   displayedColumns: string[] = ["artistName", "image", "actions"];
   showSpinner: boolean = false;
-  dataSource;
+  dataSource: any;
 
-  length = 5;
-  pageNumber = 0;
-  pageSize = 5;
+  length: number = 5;
+  pageNumber: number = 0;
+  pageSize: number = 5;
 
   recentlyViewed = [];
-  recentStoreLimit = 10;
+  recentStoreLimit: number = 10;
 
   recentlyVisibleLimit: number;
   recentlyStoreLimit: number;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  _result;
-  @Input() set result(val) {
+  _result: any;
+  @Input() set result(val: any) {
     this._result = val;
     if (this._result) {
-      this.ELEMENT_DATA = [];
+      this.artistData = [];
       this.handleResultData(this._result);
     }
   }
 
   @Output() setPagination = new EventEmitter<any>();
 
-  durationInSeconds = 3;
+  durationInSeconds: number = 3;
 
   constructor(
     private dataService: DataService,
@@ -56,19 +69,24 @@ export class ResultComponent implements OnInit {
     this.recentlyStoreLimit = parseInt(this.getStorage("recentStore"));
 
     let retrievedObj = this.getStorage("recentlyObj");
-    this.recentlyViewed = retrievedObj !== null ? JSON.parse(retrievedObj) : [];
+    try {
+      this.recentlyViewed =
+        retrievedObj !== null ? JSON.parse(retrievedObj) : [];
+    } catch (error) {
+      console.error("Error while parsing JSON", error);
+    }
   }
 
   // creating object to use as data source in table result
   handleResultData(data) {
     data.items.forEach(v => {
-      this.ELEMENT_DATA.push({
+      this.artistData.push({
         id: v.id,
         artistName: v.name,
         image: v.images ? v.images[0] : ""
       });
     });
-    this.dataSource = this.ELEMENT_DATA;
+    this.dataSource = this.artistData;
     console.log("DATA SOURCE", this.dataSource);
     this.length = data.total;
   }
@@ -79,7 +97,7 @@ export class ResultComponent implements OnInit {
   }
 
   //This prevents adding the same artist to recently viewed and adding that one to the top of the list.
-  arrangeList(artist) {
+  arrangeList(artist: Artist) {
     let counters = this.recentlyViewed.filter(c => c.id !== artist.id);
     counters.unshift(artist);
     this.setStorage("recentlyObj", counters);
@@ -106,27 +124,32 @@ export class ResultComponent implements OnInit {
     }
   }
 
-  setStorage(key, value) {
-    localStorage.setItem(key, JSON.stringify(value));
+  setStorage(key: string, value: any) {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+      console.error("Error while parsing JSON.");
+    }
   }
 
-  getStorage(key) {
+  getStorage(key: string) {
     return localStorage.getItem(key);
   }
 
-  openArtistInfo(artist) {
+  openArtistInfo(artist: any) {
+    console.log("artist info open", artist);
     this.showSpinner = true;
-    let artistObj;
+    let artistObj: any;
 
     this.dataService.openArtistInfo(artist).subscribe(
-      res => {
+      (res: any) => {
         artistObj = res;
-        const dialogRef = this.dialog.open(DialogComponent, {
+        this.dialog.open(DialogComponent, {
           width: "450px",
           autoFocus: false,
           data: { artist: artistObj, lookupType: "artistInfo" }
         });
-        dialogRef.afterClosed().subscribe(result => {});
+
         this.showSpinner = false;
       },
       (err: Response) => {

@@ -8,14 +8,14 @@
     width:13%;
 }
 
-.typeHeaderWidth {
+.typeHeaderWidthPaddingLeft {
     width:21%;
     padding-left: 15%;
 }
 .paddingCell {
     padding-left: 15%;
 }
-.spinnerClass {
+.spinner {
     left:45%;
     top: 50%;
     overflow: visible;

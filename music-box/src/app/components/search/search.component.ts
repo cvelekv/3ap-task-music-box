@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MatDialog, MatSnackBar, PageEvent } from '@angular/material';
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { MatDialog, MatSnackBar, PageEvent } from "@angular/material";
 
-import { DialogComponent } from '../dialog/dialog.component';
-import { NotificationDialog } from '../notification-dialog/notification-dialog';
-import { DataService } from './../../services/data.service';
+import { DialogComponent } from "../dialog/dialog.component";
+import { NotificationDialog } from "../notification-dialog/notification-dialog";
+import { DataService } from "./../../services/data.service";
 
 @Component({
   selector: "search-component",
@@ -12,12 +12,12 @@ import { DataService } from './../../services/data.service';
 })
 export class SearchComponent implements OnInit {
   searchValue: string;
-  receivedArtists;
+  receivedArtists: any;
 
-  recentlyViewed;
+  recentlyViewed: any;
   recentlyStoreLimit: number;
   recentlyViewLimit: number;
-  visibleArray;
+  visibleArray: any;
 
   showRecentBar: boolean;
 
@@ -32,7 +32,7 @@ export class SearchComponent implements OnInit {
       this.search(val);
     }
   }
-  durationInSeconds = 3;
+  durationInSeconds: number = 3;
 
   constructor(
     public dialog: MatDialog,
@@ -63,47 +63,38 @@ export class SearchComponent implements OnInit {
         this.showSpinner = false;
       }
     );
-    // constructing the URL that is sent to server's endpoint
-    // let url =
-    //   this.authorization.getBaseUrl() +
-    //   "/search?q=" +
-    //   this.searchValue +
-    //   "&type=artist" +
-    //   "&limit=" +
-    //   limit +
-    //   "&offset=" +
-    //   offset;
-
-    // this.http.get(url).subscribe(
-    //   data => {
-    //     this.receivedArtists = data["artists"];
-    //     this.searchedObjEmited.emit(this.receivedArtists);
-    //     this.showSpinner = false;
-    //     let notificationmsg =
-    //       "Search returned " + data["artists"].total + " results.";
-    //     if (pagination === undefined)
-    //       this.msgPrompt("notification", notificationmsg);
-    //   },
-    //   (err: Response) => {
-    //     this.msgPrompt("error", err.statusText);
-    //     this.showSpinner = false;
-    //   }
-    // );
   }
 
   //used localStorage to store values since I wanted to persist the data even after closing the window/tab, but to avoid creating and dealing with db
   //here I store parameters from settings page and recently viewed objects
   processLocalStorage() {
     let retrievedObj = localStorage.getItem("recentlyObj");
-    this.recentlyViewed = retrievedObj !== null ? JSON.parse(retrievedObj) : [];
+    {
+      try {
+        this.recentlyViewed =
+          retrievedObj !== null ? JSON.parse(retrievedObj) : [];
+      } catch (error) {
+        console.error("Error while parsing JSON");
+      }
+    }
 
     let retrievedStorelimit = localStorage.getItem("recentStore");
-    if (retrievedStorelimit)
-      this.recentlyStoreLimit = JSON.parse(retrievedStorelimit);
+    if (retrievedStorelimit) {
+      try {
+        this.recentlyStoreLimit = JSON.parse(retrievedStorelimit);
+      } catch (error) {
+        console.error("Error while parsing JSON");
+      }
+    }
 
     let retrievedViewLimit = localStorage.getItem("recentVisible");
-    if (retrievedViewLimit)
-      this.recentlyViewLimit = JSON.parse(retrievedViewLimit);
+    if (retrievedViewLimit) {
+      try {
+        this.recentlyViewLimit = JSON.parse(retrievedViewLimit);
+      } catch (error) {
+        console.error("Error while parsing JSON");
+      }
+    }
 
     let retrievedShowRecent = localStorage.getItem("showRecentBoolean");
     if (retrievedShowRecent === "true") this.showRecentBar = true;
@@ -112,16 +103,19 @@ export class SearchComponent implements OnInit {
 
   // removing stored values if the store limit is less than the current number
   adjustStoreLimit() {
-    let diff;
     if (this.recentlyStoreLimit !== null) {
-      diff = this.recentlyStoreLimit - this.recentlyViewed.length;
+      const diff = this.recentlyStoreLimit - this.recentlyViewed.length;
       if (diff < 0) {
         for (let i = 0; i < Math.abs(diff); i++) {
           this.recentlyViewed.pop();
-          localStorage.setItem(
-            "recentlyObj",
-            JSON.stringify(this.recentlyViewed)
-          );
+          try {
+            localStorage.setItem(
+              "recentlyObj",
+              JSON.stringify(this.recentlyViewed)
+            );
+          } catch (error) {
+            console.error("Error while parsing JSON");
+          }
         }
       }
     }
@@ -130,7 +124,7 @@ export class SearchComponent implements OnInit {
   //adjusting view limit to match the set one
   adjustViewLimit() {
     this.visibleArray = this.recentlyViewed.filter(
-      (item, index) => index < this.recentlyViewLimit
+      (item, index: number) => index < this.recentlyViewLimit
     );
   }
 
@@ -144,11 +138,11 @@ export class SearchComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {});
   }
 
-  setArtistName(name) {
+  setArtistName(name: string): void {
     this.dataService.artistNameSet.next(name);
   }
 
-  msgPrompt(type?, message?) {
+  msgPrompt(type?: string, message?: string): void {
     this.snackBar.openFromComponent(NotificationDialog, {
       duration: this.durationInSeconds * 1000,
       data: { type: type, msg: message }

@@ -1,4 +1,5 @@
-export const selectConstants = {
+import { Country } from "./../components/hot-releases/hot-releases.component";
+export const constants = {
   visibleSelectValues: [
     { id: "0", value: 1 },
     { id: "1", value: 2 },
@@ -20,5 +21,13 @@ export const selectConstants = {
     { id: "7", value: 8 },
     { id: "8", value: 9 },
     { id: "9", value: 10 }
+  ],
+  countries: [
+    { id: "CH", value: "Switzerland" },
+    { id: "AT", value: "Austria" },
+    { id: "DE", value: "Germany" },
+    { id: "SE", value: "Sweden" },
+    { id: "NO", value: "Norway" },
+    { id: "US", value: "USA" }
   ]
 };

@@ -1,79 +1,75 @@
-.spinnerClass {
-    left:45%;
-    top: 50%;
-    overflow: visible;
-    position: absolute;
-    z-index: 9999;
+.spinner {
+  left: 45%;
+  top: 50%;
+  overflow: visible;
+  position: absolute;
+  z-index: 9999;
 }
 .releasesContainer {
-    margin-top: 1%;
+  margin-top: 1%;
 }
 .centerNavBarTitle {
-    margin: auto;
-    pointer-events:none;
+  margin: auto;
+  pointer-events: none;
 }
 .tableWidth {
-    width: 100%;
+  width: 100%;
 }
 .nameHeaderWidth {
-    width:20%;
+  width: 20%;
 }
 .song-album-nameWidth {
-    padding-left: 5%;
-    width: 20%
+  padding-left: 5%;
+  width: 20%;
 }
 .typeHeaderWidth {
-    width: 18%;
-    padding-left: 5%;
+  width: 18%;
+  padding-left: 5%;
 }
 .paddingCell {
-    padding-left: 5%;
+  padding-left: 5%;
 }
 
-
-@media only screen and (max-device-width : 500px) {
-.paddingCell {
+@media only screen and (max-device-width: 500px) {
+  .paddingCell {
     padding-left: 3%;
     font-size: 11px;
-}
-.paddingSongCell{
+  }
+  .paddingSongCell {
     padding-left: 5%;
     font-size: 11px;
-    
-}
+  }
 
-.typeHeaderWidth {
+  .typeHeaderWidth {
     padding-left: 3%;
-}
+  }
 
-
-.td-font-size {
+  .td-font-size {
     font-size: 11px;
-}
-.release-text {
-    margin-left: 0px!important;
+  }
+  .release-text {
+    margin-left: 0px !important;
     font-size: 15px;
+  }
 }
-}
-
 
 .example-panel-black.mat-select-panel {
-    background: rgba(9, 9, 9, 0.8);
+  background: rgba(9, 9, 9, 0.8);
 }
 .option-select {
-    color: white;
+  color: white;
 }
-.select-field{
-    margin-top: 1%;
-    float: right;
+.select-field {
+  margin-top: 1%;
+  float: right;
 }
 .releaseTitle {
-    text-align: center;
+  text-align: center;
 }
 .release-text {
-    margin-left: 10%;
-    padding-top: 2%;
+  margin-left: 10%;
+  padding-top: 2%;
 }
-.paddingSongCell{
-    padding-left: 5%;
+.paddingSongCell {
+  padding-left: 5%;
 }

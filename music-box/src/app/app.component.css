@@ -14,7 +14,7 @@
     bottom: 0;                 
 }
 
-#body-for-sticky {
+.body-for-sticky {
     position: relative;        
     min-height: 100%;          
     padding-bottom: 6rem;      

@@ -1,8 +1,14 @@
-import { AfterViewInit, Component, ElementRef, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Inject,
+  OnInit
+} from "@angular/core";
+import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from "@angular/material";
 
-import { NotificationDialog } from '../notification-dialog/notification-dialog';
-import { DataService } from './../../services/data.service';
+import { NotificationDialog } from "../notification-dialog/notification-dialog";
+import { DataService } from "./../../services/data.service";
 
 @Component({
   selector: "app-dialog",
@@ -10,17 +16,16 @@ import { DataService } from './../../services/data.service';
   styleUrls: ["./dialog.component.css"]
 })
 export class DialogComponent implements OnInit, AfterViewInit {
-  lookupType;
-  artistData;
-  albumTracksData;
+  lookupType: string;
+  artistData: any;
+  albumTracksData: any;
 
   albumName: string;
   numOfTracks: number;
 
   favoriteTracksList = [];
   trackFavor: boolean = false;
-  durationInSeconds = 2;
-  favoritesStatus;
+  durationInSeconds: number = 2;
 
   constructor(
     public dialogRef: MatDialogRef<DialogComponent>,
@@ -31,7 +36,9 @@ export class DialogComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.lookupType = this.data.lookupType;
-    if (this.data.artist) this.artistData = this.data.artist;
+    if (this.data.artist) {
+      this.artistData = this.data.artist;
+    }
 
     if (this.data.albumTracks) {
       this.albumTracksData = this.data.albumTracks.items;
@@ -39,7 +46,11 @@ export class DialogComponent implements OnInit, AfterViewInit {
       this.numOfTracks = this.albumTracksData.length;
     }
     if (this.data.lookupType === "favorites") {
-      this.favoriteTracksList = JSON.parse(this.getStorage("favoriteTracks"));
+      try {
+        this.favoriteTracksList = JSON.parse(this.getStorage("favoriteTracks"));
+      } catch (error) {
+        console.error("Error while parsing JSON.");
+      }
     }
   }
 
@@ -51,7 +62,7 @@ export class DialogComponent implements OnInit, AfterViewInit {
     this.dialogRef.close();
   }
 
-  setArtistName(name) {
+  setArtistName(name: string): void {
     this.dataService.artistNameSet.next(name);
     this.dialogRef.close();
   }
