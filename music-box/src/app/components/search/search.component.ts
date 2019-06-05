@@ -46,7 +46,7 @@ export class SearchComponent implements OnInit {
     this.adjustViewLimit();
   }
 
-  search(pagination?: PageEvent) {
+  search(pagination?: PageEvent): void {
     this.showSpinner = true;
     this.dataService.search(this.searchValue, pagination).subscribe(
       data => {
@@ -67,7 +67,7 @@ export class SearchComponent implements OnInit {
 
   //used localStorage to store values since I wanted to persist the data even after closing the window/tab, but to avoid creating and dealing with db
   //here I store parameters from settings page and recently viewed objects
-  processLocalStorage() {
+  processLocalStorage(): void {
     let retrievedObj = localStorage.getItem("recentlyObj");
     {
       try {
@@ -95,14 +95,13 @@ export class SearchComponent implements OnInit {
         console.error("Error while parsing JSON");
       }
     }
-
-    let retrievedShowRecent = localStorage.getItem("showRecentBoolean");
-    if (retrievedShowRecent === "true") this.showRecentBar = true;
-    else if (retrievedShowRecent === "false") this.showRecentBar = false;
+    JSON.parse(localStorage.getItem("showRecentBoolean")) === true
+      ? (this.showRecentBar = true)
+      : (this.showRecentBar = false);
   }
 
   // removing stored values if the store limit is less than the current number
-  adjustStoreLimit() {
+  adjustStoreLimit(): void {
     if (this.recentlyStoreLimit !== null) {
       const diff = this.recentlyStoreLimit - this.recentlyViewed.length;
       if (diff < 0) {
@@ -122,7 +121,7 @@ export class SearchComponent implements OnInit {
   }
 
   //adjusting view limit to match the set one
-  adjustViewLimit() {
+  adjustViewLimit(): void {
     this.visibleArray = this.recentlyViewed.filter(
       (item, index: number) => index < this.recentlyViewLimit
     );
