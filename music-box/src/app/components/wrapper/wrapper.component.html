@@ -1,0 +1,10 @@
+<div>
+  <search-component
+    (searchedObjEmited)="setResultObj($event)"
+    [pagination]="paginationReceived"
+  ></search-component>
+  <result-component
+    [result]="resultObj"
+    (setPagination)="paginationSetting($event)"
+  ></result-component>
+</div>

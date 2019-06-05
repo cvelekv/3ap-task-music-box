@@ -1,0 +1,28 @@
+.example-h2 {
+  text-align: center;
+}
+.save-button{
+  background-color: #303030;
+  color: white;
+}
+.settingsCard{
+  width: 50%;
+  margin-left: 25%;
+  border: 1px solid #80808033;
+}
+.example-button-row {
+  text-align: center;
+}
+@media only screen and (max-device-width : 500px) {
+  .settingsCard{
+    width: 100%;
+    margin-left: 0;
+    border: 1px solid #80808033;
+  }
+}
+.selectAlign{
+  text-align: center;
+}
+.example-margin {
+ text-align: center;
+}

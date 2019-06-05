@@ -1,0 +1,46 @@
+<div class="container mt-5 marginLeft">
+  <div *ngIf="showSpinner" class="spinnerClass">
+    <mat-spinner diameter="60"></mat-spinner>
+  </div>
+  <h5>SEARCH FOR YOUR FAVORITE ARTIST</h5>
+  <div>
+    <mat-form-field class="example-full-width">
+      <input [(ngModel)]="searchValue" matInput placeholder="Search here" />
+    </mat-form-field>
+
+    <div class="example-button-row">
+      <button
+        mat-raised-button
+        class="btn btn-primary sm m-2 button-color"
+        (click)="search()"
+        [disabled]="!searchValue"
+      >
+        <mat-icon>search</mat-icon>
+      </button>
+    </div>
+    <div class="row searchBar" *ngIf="visibleArray.length > 0 && showRecentBar">
+      <p class="col-12 col-md-10">
+        <b>Recently Viewed:</b>
+        <a
+          *ngFor="let recent of visibleArray; let i = index"
+          [routerLink]="['/artist-detail-page', recent.id]"
+          (click)="setArtistName(recent.artistName)"
+          matTooltip="View all albums."
+        >
+          {{ recent.artistName
+          }}<span *ngIf="i !== visibleArray.length - 1">,</span>
+        </a>
+      </p>
+      <div class="col-12 col-md-2">
+        <button
+          class="showMoreLink"
+          matTooltip="Show all recently searched."
+          mat-stroked-button
+          (click)="openShowMoreRecent()"
+        >
+          Show more
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

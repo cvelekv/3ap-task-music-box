@@ -1,0 +1,5 @@
+<div class="center-msg">
+  <span [ngClass]="type === 'notification' ? 'notification-msg' : 'error-msg'">
+    <b><span *ngIf="type === 'error'">Error: </span>{{ message }}</b>
+  </span>
+</div>

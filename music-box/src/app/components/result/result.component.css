@@ -1,0 +1,53 @@
+.marginLeft{
+  margin:auto;
+  width: 65.5%
+}
+table {
+  width: 100%;
+}
+img {
+  border-radius: 50%;
+}
+.marginLeft{
+  margin:auto;
+  width: 65.5%
+}
+
+@media only screen and (max-device-width : 770px) 
+{
+  .marginLeft{
+    margin:auto;
+    width: 100%;
+  } 
+}
+
+.info-button{
+  border: none;
+  background-color: transparent;
+}
+.action-header{
+  width: 6%;
+}
+.action-button{
+  position: relative;
+  left: -2%;
+  padding-bottom: 5%;
+}
+.spinnerClass {
+
+  left:45%;
+  top: 50%;
+  overflow: visible;
+  position: absolute;
+  z-index: 9999;
+}
+/* this is not good because of the accessibility in the page but had to put it for UX*/
+*:focus {
+  outline: none !important;
+  border: 0 !important;
+}
+.no-res-card {
+text-align: center;
+margin:auto;
+width: 65.5%
+}

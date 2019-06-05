@@ -1,0 +1,44 @@
+<mat-card class="mt-5 settingsCard">
+  <h2 class="mb-3 example-h2">Settings</h2>
+  <hr style="border: 1px solid #80808033" />
+  <div class="example-margin">
+    <mat-checkbox [(ngModel)]="showRecentSearched"
+      >Show recently viewed Albums</mat-checkbox
+    >
+  </div>
+  <hr style="border: 1px solid #80808033" />
+  <div *ngIf="showRecentSearched" class="selectAlign">
+    <p>Visible recently viewed albums</p>
+    <mat-form-field>
+      <mat-label>Please select</mat-label>
+      <mat-select [(value)]="selectedNumVisible">
+        <mat-option *ngFor="let num of visibleSelectValues" [value]="num.value">
+          {{ num.value }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <p>Store recently viewed albums</p>
+    <mat-form-field>
+      <mat-label>Please select</mat-label>
+      <mat-select [(value)]="selectedNumStore">
+        <mat-option *ngFor="let num of storeSelectValues" [value]="num.value">
+          {{ num.value }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="example-button-row">
+    <button
+      mat-raised-button
+      class="save-button m-2"
+      [disabled]="!selectedNumVisible && !selectedNumStore"
+      (click)="save()"
+    >
+      Save
+    </button>
+    <button mat-button color="warn" (click)="clearSettings()">
+      Clear settings
+    </button>
+  </div>
+</mat-card>

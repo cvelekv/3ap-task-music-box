@@ -1,0 +1,43 @@
+.example-form {
+    width: 100%;
+    display: inline-block;
+}
+.example-button-row{
+    display: inline-block;
+}
+.example-full-width {
+    width: 60%;
+}
+.button-color {
+    background-color:black;
+    color:white;
+}
+.marginLeft{  
+    margin-left: 16%;
+}
+
+.spinnerClass {
+    left:45%;
+    top: 50%;
+    overflow: visible;
+    position: absolute;
+    z-index: 9999;
+  }
+.searchBar {
+    width: 69.5%;
+}
+
+.showMoreLink{
+    float: right;
+}
+@media only screen and (max-device-width : 768px) {
+    .showMoreLink{
+        float: left;
+    }
+    .marginLeft{ 
+        margin-left: auto;
+    }
+    .searchBar {
+        width: 100%;
+    }
+}

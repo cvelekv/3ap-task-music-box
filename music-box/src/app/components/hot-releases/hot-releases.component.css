@@ -1,0 +1,79 @@
+.spinnerClass {
+    left:45%;
+    top: 50%;
+    overflow: visible;
+    position: absolute;
+    z-index: 9999;
+}
+.releasesContainer {
+    margin-top: 1%;
+}
+.centerNavBarTitle {
+    margin: auto;
+    pointer-events:none;
+}
+.tableWidth {
+    width: 100%;
+}
+.nameHeaderWidth {
+    width:20%;
+}
+.song-album-nameWidth {
+    padding-left: 5%;
+    width: 20%
+}
+.typeHeaderWidth {
+    width: 18%;
+    padding-left: 5%;
+}
+.paddingCell {
+    padding-left: 5%;
+}
+
+
+@media only screen and (max-device-width : 500px) {
+.paddingCell {
+    padding-left: 3%;
+    font-size: 11px;
+}
+.paddingSongCell{
+    padding-left: 5%;
+    font-size: 11px;
+    
+}
+
+.typeHeaderWidth {
+    padding-left: 3%;
+}
+
+
+.td-font-size {
+    font-size: 11px;
+}
+.release-text {
+    margin-left: 0px!important;
+    font-size: 15px;
+}
+}
+
+
+.example-panel-black.mat-select-panel {
+    background: rgba(9, 9, 9, 0.8);
+}
+.option-select {
+    color: white;
+}
+.select-field{
+    margin-top: 1%;
+    float: right;
+}
+.releaseTitle {
+    text-align: center;
+}
+.release-text {
+    margin-left: 10%;
+    padding-top: 2%;
+}
+.paddingSongCell{
+    padding-left: 5%;
+}

@@ -1,0 +1,9 @@
+.error-msg{
+    color: red;
+  }
+.notification-msg{
+  color:rgb(103, 116, 211);
+}
+.center-msg{
+  text-align: center;
+}

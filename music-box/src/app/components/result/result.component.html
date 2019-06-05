@@ -1,0 +1,82 @@
+<div *ngIf="showSpinner" class="spinnerClass">
+  <mat-spinner diameter="60"></mat-spinner>
+</div>
+<div
+  *ngIf="dataSource !== undefined && dataSource.length > 0"
+  class="mt-5 marginLeft"
+>
+  <nav class="navbar navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Search results</a>
+  </nav>
+  <div>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <!-- Artist name Column -->
+      <ng-container matColumnDef="artistName">
+        <th mat-header-cell *matHeaderCellDef>
+          Artist name
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <a
+            [routerLink]="['/artist-detail-page', element.id]"
+            (click)="addToRecentlyViewed(element)"
+            matTooltip="View all albums."
+            >{{ element.artistName }}</a
+          >
+        </td>
+      </ng-container>
+      <!--Image column -->
+      <ng-container matColumnDef="image">
+        <th mat-header-cell *matHeaderCellDef align="right"></th>
+        <td mat-cell *matCellDef="let element" align="right">
+          <img
+            *ngIf="element.image"
+            class="mt-2 mb-2"
+            [attr.src]="element.image.url | securePipe | async"
+            alt="Avatar"
+            width="60px"
+            height="60px"
+          />
+          <img
+            *ngIf="!element.image"
+            class="mt-2 mb-2"
+            [attr.src]="'../../../assets/300px-No_image_available.svg.png'"
+            alt="Avatar"
+            width="60px"
+            height="60px"
+          />
+        </td>
+      </ng-container>
+      <!-- Actions column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="action-header"></th>
+        <td mat-cell *matCellDef="let element" class="action-button">
+          <button
+            class="info-button"
+            (click)="openArtistInfo(element)"
+            matTooltip="View artist's info."
+          >
+            <mat-icon aria-label="Example icon-button">info</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <mat-paginator
+      [length]="length"
+      [pageSize]="pageSize"
+      [pageIndex]="pageNumber"
+      [pageSizeOptions]="[5, 10, 20]"
+      showFirstLastButtons
+      (page)="emitPagination($event)"
+    ></mat-paginator>
+  </div>
+</div>
+
+<!-- no results -->
+<div *ngIf="dataSource !== undefined && dataSource.length === 0">
+  <mat-card class="no-res-card">
+    <p>No results</p>
+  </mat-card>
+</div>

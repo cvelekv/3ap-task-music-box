@@ -1,0 +1,43 @@
+.detailAlbumsContainer {
+    margin-top: 1%;
+}
+.tableWidth {
+    width: 100%;
+} 
+.nameHeaderWidth {
+    width:13%;
+}
+
+.typeHeaderWidth {
+    width:21%;
+    padding-left: 15%;
+}
+.paddingCell {
+    padding-left: 15%;
+}
+.spinnerClass {
+    left:45%;
+    top: 50%;
+    overflow: visible;
+    position: absolute;
+    z-index: 9999;
+  }
+  .centerNavBarTitle {
+    margin: auto;
+  }
+  .navbar {
+    pointer-events:none
+  }
+
+  @media only screen and (max-device-width : 500px) {
+    .paddingCell {
+        padding-left: 3%;
+    }
+    .typeHeaderWidth {
+        padding-left: 3%;
+    }
+    
+  }
+  .mat-card {
+    padding: 0px;
+}

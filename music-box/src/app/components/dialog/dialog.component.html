@@ -1,0 +1,193 @@
+<!-- recently viewed albums lookup type -->
+<div *ngIf="lookupType === 'recent'">
+  <h1 mat-dialog-title class="centerDialog">Recently viewed albums</h1>
+  <div mat-dialog-content class="dialogContent">
+    <mat-form-field *ngFor="let v of data.recent" class="centerDialog">
+      <!-- added this because of the matInput form control error -->
+      <input matInput type="text" style="display: none" />
+      <a
+        [routerLink]="['/artist-detail-page', v.id]"
+        (click)="setArtistName(v.artistName)"
+      >
+        <img
+          *ngIf="v.image"
+          class="mt-2 mb-2"
+          [attr.src]="v.image.url | securePipe | async"
+          alt="Avatar"
+          width="110px"
+          height="110px"
+        />
+        <img
+          *ngIf="!v.image"
+          class="mt-2 mb-2"
+          [attr.src]="'../../../assets/300px-No_image_available.svg.png'"
+          alt="Avatar"
+          width="110px"
+          height="110px"
+        />
+      </a>
+      <p>{{ v.artistName }}</p>
+    </mat-form-field>
+  </div>
+</div>
+
+<!-- artist info lookup type -->
+<div *ngIf="lookupType === 'artistInfo'">
+  <div mat-dialog-content>
+    <mat-card class="example-card">
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image">
+          <img
+            height="auto"
+            width="50px"
+            src="../../../assets/sharp-music_note-24px.svg"
+          />
+        </div>
+
+        <mat-card-title>{{ artistData.name }}</mat-card-title>
+        <mat-card-subtitle>{{ artistData.type }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-divider></mat-divider>
+      <img
+        *ngIf="artistData.images.length > 0"
+        mat-card-image
+        [src]="artistData.images[0].url"
+        alt="Photo of artist"
+        width="80px"
+        height="auto"
+        class="mt-2"
+      />
+      <img
+        *ngIf="artistData.images.length === 0"
+        mat-card-image
+        [src]="'../../../assets/300px-No_image_available.svg.png'"
+        alt="Photo of artist"
+        width="80px"
+        height="auto"
+        class="mt-2"
+      />
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item>
+            <img src="../../../assets/sharp-people-24px.svg" />Followers:
+            <b> {{ artistData.followers.total }}</b></mat-list-item
+          >
+          <mat-divider></mat-divider>
+          <div class="chips-container">
+            <img src="../../../assets/sharp-library_music-24px.svg" />Genres:
+            <mat-chip-list *ngFor="let g of artistData.genres">
+              <mat-chip class="chip-text">{{ g }}</mat-chip>
+            </mat-chip-list>
+          </div>
+
+          <mat-divider></mat-divider>
+          <mat-list-item>
+            <img src="../../../assets/sharp-favorite-24px.svg" />Popularity:
+            <b> {{ artistData.popularity }}</b></mat-list-item
+          >
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+<!-- albums tracks lookup type -->
+<div *ngIf="lookupType === 'albumTracks'">
+  <div mat-dialog-content>
+    <mat-card class="example-card">
+      <mat-card-header>
+        <div mat-card-avatar>
+          <img
+            src="../../../assets/sharp-album-24px.svg"
+            height="auto"
+            width="50px"
+          />
+        </div>
+        <mat-card-title>{{ albumName }}</mat-card-title>
+        <mat-card-subtitle>{{ numOfTracks }} tracks</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list-item *ngFor="let track of albumTracksData; let i = index">
+          <mat-list-item>
+            <img src="../../../assets/sharp-equalizer-24px.svg" />
+            {{ track.track_number }}. {{ track.name }}
+            <b>{{ track.duration_ms | date: "mm:ss" }}</b>
+
+            <button
+              #buttonRef
+              id="button{{ track.id }}"
+              mat-icon-button
+              (click)="favorite(track, buttonRef)"
+              matTooltip="Favorite"
+            >
+              <mat-icon aria-label="Example icon-button with a heart icon"
+                >favorite</mat-icon
+              >
+            </button>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+        </mat-list-item>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+<!-- favorites list lookup type -->
+<div *ngIf="lookupType === 'favorites'">
+  <div mat-dialog-content>
+    <mat-card class="example-card">
+      <mat-card-header>
+        <div mat-card-avatar>
+          <img
+            src="../../../assets/sharp-album-24px.svg"
+            height="auto"
+            width="50px"
+          />
+        </div>
+        <mat-card-title>Your Favorites List</mat-card-title>
+        <mat-card-subtitle
+          >{{
+            favoriteTracksList.length > 0 ? favoriteTracksList.length : "No "
+          }}
+          tracks</mat-card-subtitle
+        >
+      </mat-card-header>
+      <mat-card-content *ngIf="favoriteTracksList.length > 0">
+        <mat-list-item *ngFor="let track of favoriteTracksList; let i = index">
+          <mat-list-item>
+            <img src="../../../assets/sharp-equalizer-24px.svg" />
+            {{ i + 1 }}.
+            <span *ngFor="let artist of track.artists; let j = index">
+              {{ artist.name
+              }}<span *ngIf="j !== track.artists.length - 1">, </span>
+            </span>
+            - {{ track.name }}
+            <b>{{ track.duration_ms | date: "mm:ss" }}</b>
+
+            <button
+              #buttonRef
+              id="button{{ track.id }}"
+              mat-icon-button
+              (click)="removeFavorite(track.id)"
+              matTooltip="Remove the track."
+            >
+              <mat-icon aria-label="Example icon-button">delete</mat-icon>
+            </button>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+        </mat-list-item>
+      </mat-card-content>
+      <mat-card-content *ngIf="favoriteTracksList.length === 0">
+        <mat-list-item class="centerText">
+          <span class="no-tracks-class">You don't have any tracks.</span>
+        </mat-list-item>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()" class="centerButton">
+    Close
+  </button>
+</div>

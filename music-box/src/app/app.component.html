@@ -1,0 +1,59 @@
+<div class="container" id="body-for-sticky">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">
+      <img
+        class="mr-2"
+        src="../../..//assets/spotify-48.png"
+        height="40"
+        alt=""
+        style="color:white"
+      />
+      MusicBox</a
+    >
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup"
+      aria-label="Toggle navigation"
+      (click)="toggleCollapse()"
+      [attr.aria-expanded]="!isCollapsed"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div
+      class="navbar-collapse"
+      [class.collapse]="isCollapsed"
+      id="navbarNavAltMarkup"
+    >
+      <div class="navbar-nav">
+        <a
+          class="nav-item nav-link"
+          [routerLink]="['search-page']"
+          routerLinkActive="active"
+          >Search
+        </a>
+        <!-- <span class="sr-only">(current)</span> -->
+        <a [routerLink]="" class="nav-item nav-link" (click)="openFavorites()"
+          >Favorites</a
+        >
+        <a
+          class="nav-item nav-link"
+          [routerLink]="['hot-releases']"
+          routerLinkActive="active"
+          >Hot Releases</a
+        >
+        <a
+          class="nav-item nav-link"
+          [routerLink]="['settings-page']"
+          routerLinkActive="active"
+          >Settings</a
+        >
+      </div>
+    </div>
+  </nav>
+
+  <router-outlet></router-outlet>
+  <div class="footer sticky-footer">Nikola Cvetkovic 2019</div>
+</div>
