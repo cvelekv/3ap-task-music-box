@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 
+import { selectConstants } from '../../models/selectConstants';
 import { NotificationDialog } from '../notification-dialog/notification-dialog';
 
 @Component({
@@ -12,29 +13,31 @@ import { NotificationDialog } from '../notification-dialog/notification-dialog';
 export class SettingsComponent implements OnInit {
   showRecentSearched: boolean = true;
 
-  visibleSelectValues: any[] = [
-    { id: "0", value: 1 },
-    { id: "1", value: 2 },
-    { id: "2", value: 3 },
-    { id: "3", value: 4 },
-    { id: "4", value: 5 },
-    { id: "5", value: 6 },
-    { id: "6", value: 7 },
-    { id: "7", value: 8 }
-  ];
+  visibleSelectValues: any[] = selectConstants.visibleSelectValues;
+  storeSelectValues: any[] = selectConstants.storeSelectValues;
+  // visibleSelectValues: any[] = [
+  //   { id: "0", value: 1 },
+  //   { id: "1", value: 2 },
+  //   { id: "2", value: 3 },
+  //   { id: "3", value: 4 },
+  //   { id: "4", value: 5 },
+  //   { id: "5", value: 6 },
+  //   { id: "6", value: 7 },
+  //   { id: "7", value: 8 }
+  // ];
 
-  storeSelectValues: any[] = [
-    { id: "0", value: 1 },
-    { id: "1", value: 2 },
-    { id: "2", value: 3 },
-    { id: "3", value: 4 },
-    { id: "4", value: 5 },
-    { id: "5", value: 6 },
-    { id: "6", value: 7 },
-    { id: "7", value: 8 },
-    { id: "8", value: 9 },
-    { id: "9", value: 10 }
-  ];
+  // storeSelectValues: any[] = [
+  //   { id: "0", value: 1 },
+  //   { id: "1", value: 2 },
+  //   { id: "2", value: 3 },
+  //   { id: "3", value: 4 },
+  //   { id: "4", value: 5 },
+  //   { id: "5", value: 6 },
+  //   { id: "6", value: 7 },
+  //   { id: "7", value: 8 },
+  //   { id: "8", value: 9 },
+  //   { id: "9", value: 10 }
+  // ];
 
   selectedNumVisible: number;
   selectedNumStore: number;
