@@ -22,6 +22,8 @@ export class DialogComponent implements OnInit, AfterViewInit {
   trackFavor: boolean = false;
   durationInSeconds: number = 2;
 
+  // @ViewChild("buttonRef") buttonRef;
+
   constructor(
     public dialogRef: MatDialogRef<DialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -31,25 +33,25 @@ export class DialogComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit() {
-    // window.localStorage.clear();
     this.lookupType = this.data.lookupType;
     if (this.data.artist) {
       this.artistData = this.data.artist;
     }
 
     if (this.data.albumTracks) {
-      console.log("albumTracksData", this.data.albumTracks);
 
       this.albumTracksData = this.data.albumTracks.items;
       this.albumName = this.data.albumName;
       this.numOfTracks = this.albumTracksData.length;
     }
-    if (this.data.lookupType === "favorites") {
+    if (this.data.lookupType === "albumTracks" || "favorites") {
       try {
-        this.favoriteTracksList =
-          JSON.parse(
-            this.storageService.getItemFromStorage("favoriteTracks")
-          ) || [];
+        const temp = JSON.parse(
+          this.storageService.getItemFromStorage("favoriteTracks")
+        );
+        temp !== undefined
+          ? (this.favoriteTracksList = temp)
+          : (this.favoriteTracksList = []);
       } catch (error) {
         console.error("Error while parsing JSON.");
       }
@@ -87,6 +89,7 @@ export class DialogComponent implements OnInit, AfterViewInit {
         this.favoriteTracksList
       );
       this.msgPrompt("notification", "Favorite added to list.");
+
     }
   }
 

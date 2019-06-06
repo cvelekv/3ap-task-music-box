@@ -18,6 +18,7 @@ import { AuthorizationService } from './services/authorization.service';
 import { DataService } from './services/data.service';
 import { StorageService } from './services/storage.service';
 import { MaterialModule } from './shared/material-module';
+import { SecurePipe } from './shared/secure.pipe';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { MaterialModule } from './shared/material-module';
     DetailAlbumsComponent,
     NotificationDialog,
     DialogComponent,
-    HotReleasesComponent
+    HotReleasesComponent,
+    SecurePipe
   ],
   imports: [
     BrowserModule,
