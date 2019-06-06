@@ -1,13 +1,13 @@
-import { constants } from "./../../models/constants";
-import { HttpClient } from "@angular/common/http";
-import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { FormControl } from "@angular/forms";
-import { MatPaginator, MatSnackBar, PageEvent } from "@angular/material";
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { MatPaginator, MatSnackBar, PageEvent } from '@angular/material';
 
-import { AuthorizationService } from "../../services/authorization.service";
-import { DataService } from "../../services/data.service";
-import { NotificationDialog } from "../notification-dialog/notification-dialog";
-import { Release } from "../../models/release";
+import { Release } from '../../models/release';
+import { AuthorizationService } from '../../services/authorization.service';
+import { DataService } from '../../services/data.service';
+import { NotificationDialog } from '../notification-dialog/notification-dialog';
+import { constants } from './../../models/constants';
 
 export interface Country {
   id: string;
@@ -65,11 +65,11 @@ export class HotReleasesComponent implements OnInit {
       this.getReleases(countryID);
     });
   }
-  getCountryName(id: string) {
-    return this.countries.find(n => n.id === id).value;
+  getCountryName(id: string): string {
+    return this.countries.find(country => country.id === id).value;
   }
 
-  getReleases(country?: string, pagination?: PageEvent) {
+  getReleases(country?: string, pagination?: PageEvent): void {
     let tempCountryID = country ? country : this.countryIDSet;
 
     this.showSpinner = true;
@@ -91,14 +91,14 @@ export class HotReleasesComponent implements OnInit {
     );
   }
 
-  msgPrompt(type?: string, message?: string) {
+  msgPrompt(type?: string, message?: string): void {
     this.snackBar.openFromComponent(NotificationDialog, {
       duration: this.durationInSeconds * 1000,
       data: { type: type, msg: message }
     });
   }
 
-  setArtistName(name: string) {
+  setArtistNameToStorage(name: string): void {
     this.dataService.artistNameSet.next(name);
   }
 }

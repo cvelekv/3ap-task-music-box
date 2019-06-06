@@ -12,10 +12,9 @@
     background-color:black;
     color:white;
 }
-.marginLeft{  
+.searchHeaderMarginLeft{  
     margin-left: 16%;
 }
-
 .spinner {
     left:45%;
     top: 50%;
@@ -34,7 +33,7 @@
     .showMoreLink{
         float: left;
     }
-    .marginLeft{ 
+    .searchHeaderMarginLeft{ 
         margin-left: auto;
     }
     .searchBar {

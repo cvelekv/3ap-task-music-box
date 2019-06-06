@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { MatDialog, MatSnackBar, PageEvent } from "@angular/material";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { MatDialog, MatSnackBar, PageEvent } from '@angular/material';
 
-import { DialogComponent } from "../dialog/dialog.component";
-import { NotificationDialog } from "../notification-dialog/notification-dialog";
-import { DataService } from "./../../services/data.service";
+import { DialogComponent } from '../dialog/dialog.component';
+import { NotificationDialog } from '../notification-dialog/notification-dialog';
+import { Artist } from './../../models/artist';
+import { DataService } from './../../services/data.service';
 
 @Component({
   selector: "search-component",
@@ -14,10 +15,10 @@ export class SearchComponent implements OnInit {
   searchValue: string;
   receivedArtists: any;
 
-  recentlyViewed: any;
+  recentlyViewed: Artist[];
   recentlyStoreLimit: number;
   recentlyViewLimit: number;
-  visibleArray: any;
+  visibleArray: Artist[];
 
   showRecentBar: boolean;
 
@@ -55,8 +56,9 @@ export class SearchComponent implements OnInit {
         this.showSpinner = false;
         let notificationmsg =
           "Search returned " + data["artists"].total + " results.";
-        if (pagination === undefined)
+        if (pagination === undefined) {
           this.msgPrompt("notification", notificationmsg);
+        }
       },
       (err: Response) => {
         this.msgPrompt("error", err.statusText);
@@ -95,9 +97,13 @@ export class SearchComponent implements OnInit {
         console.error("Error while parsing JSON");
       }
     }
-    JSON.parse(localStorage.getItem("showRecentBoolean")) === true
-      ? (this.showRecentBar = true)
-      : (this.showRecentBar = false);
+    try {
+      JSON.parse(localStorage.getItem("showRecentBoolean")) === true
+        ? (this.showRecentBar = true)
+        : (this.showRecentBar = false);
+    } catch (error) {
+      console.error("Error while parsing JSON");
+    }
   }
 
   // removing stored values if the store limit is less than the current number
@@ -128,13 +134,11 @@ export class SearchComponent implements OnInit {
   }
 
   openShowMoreRecent(): void {
-    const dialogRef = this.dialog.open(DialogComponent, {
+    this.dialog.open(DialogComponent, {
       width: "450px",
       autoFocus: false,
       data: { recent: this.recentlyViewed, lookupType: "recent" }
     });
-
-    dialogRef.afterClosed().subscribe(result => {});
   }
 
   setArtistName(name: string): void {

@@ -44,7 +44,7 @@
           <a
             *ngFor="let artist of element.artists; let i = index"
             [routerLink]="['/artist-detail-page', artist.id]"
-            (click)="setArtistName(artist.name)"
+            (click)="setArtistNameToStorage(artist.name)"
             matTooltip="View all albums."
             >{{ artist.name
             }}<span

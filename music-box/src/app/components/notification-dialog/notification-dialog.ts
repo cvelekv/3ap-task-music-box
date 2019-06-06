@@ -7,8 +7,8 @@ import { MAT_SNACK_BAR_DATA } from '@angular/material';
   styleUrls: ["./notification-dialog.css"]
 })
 export class NotificationDialog implements OnInit {
-  message;
-  type;
+  message: string;
+  type: string;
 
   constructor(@Inject(MAT_SNACK_BAR_DATA) public data: any) {}
   ngOnInit(): void {

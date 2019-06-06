@@ -1,14 +1,8 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  Inject,
-  OnInit
-} from "@angular/core";
-import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from "@angular/material";
+import { AfterViewInit, Component, ElementRef, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 
-import { NotificationDialog } from "../notification-dialog/notification-dialog";
-import { DataService } from "./../../services/data.service";
+import { NotificationDialog } from '../notification-dialog/notification-dialog';
+import { DataService } from './../../services/data.service';
 
 @Component({
   selector: "app-dialog",
@@ -37,17 +31,22 @@ export class DialogComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.lookupType = this.data.lookupType;
     if (this.data.artist) {
+      console.log("artistData", this.data.artist);
       this.artistData = this.data.artist;
     }
 
     if (this.data.albumTracks) {
+      console.log("albumTracksData", this.data.albumTracks);
+
       this.albumTracksData = this.data.albumTracks.items;
       this.albumName = this.data.albumName;
       this.numOfTracks = this.albumTracksData.length;
     }
     if (this.data.lookupType === "favorites") {
       try {
-        this.favoriteTracksList = JSON.parse(this.getStorage("favoriteTracks"));
+        this.favoriteTracksList = JSON.parse(
+          this.getItemFromStorage("favoriteTracks")
+        );
       } catch (error) {
         console.error("Error while parsing JSON.");
       }
@@ -67,8 +66,8 @@ export class DialogComponent implements OnInit, AfterViewInit {
     this.dialogRef.close();
   }
 
-  favorite(track, button: ElementRef) {
-    let obj = this.getStorage("favoriteTracks");
+  favorite(track: any, button: ElementRef): void {
+    let obj = this.getItemFromStorage("favoriteTracks");
     obj !== null
       ? (this.favoriteTracksList = JSON.parse(obj))
       : (this.favoriteTracksList = []);
@@ -78,13 +77,13 @@ export class DialogComponent implements OnInit, AfterViewInit {
     } else {
       this.favoriteTracksList.push(track);
       button["_elementRef"].nativeElement.style.color = "red";
-      this.setStorage("favoriteTracks", this.favoriteTracksList);
+      this.setItemToStorage("favoriteTracks", this.favoriteTracksList);
       this.msgPrompt("notification", "Favorite added to list.");
     }
   }
 
-  processFavorites() {
-    let obj = this.getStorage("favoriteTracks");
+  processFavorites(): void {
+    let obj = this.getItemFromStorage("favoriteTracks");
     let favs;
     if (obj) {
       favs = JSON.parse(obj);
@@ -95,22 +94,22 @@ export class DialogComponent implements OnInit, AfterViewInit {
     });
   }
 
-  removeFavorite(id) {
+  removeFavorite(id: number): void {
     let array = this.favoriteTracksList.filter(val => val.id != id);
     this.favoriteTracksList = array;
-    this.setStorage("favoriteTracks", this.favoriteTracksList);
+    this.setItemToStorage("favoriteTracks", this.favoriteTracksList);
     this.msgPrompt("notification", "Favorite removed!");
   }
 
-  getStorage(key) {
+  getItemFromStorage(key: string): string {
     return localStorage.getItem(key);
   }
 
-  setStorage(key, value) {
+  setItemToStorage(key: string, value: any): void {
     localStorage.setItem(key, JSON.stringify(value));
   }
 
-  msgPrompt(type?, message?) {
+  msgPrompt(type?: string, message?: string): void {
     this.snackBar.openFromComponent(NotificationDialog, {
       duration: this.durationInSeconds * 1000,
       data: { type: type, msg: message }

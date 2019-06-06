@@ -1,9 +1,9 @@
-import { Component, OnInit } from "@angular/core";
-import { MatSnackBar } from "@angular/material";
-import { Router } from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material';
+import { Router } from '@angular/router';
 
-import { constants } from "../../models/constants";
-import { NotificationDialog } from "../notification-dialog/notification-dialog";
+import { constants } from '../../models/constants';
+import { NotificationDialog } from '../notification-dialog/notification-dialog';
 
 @Component({
   selector: "app-settings",

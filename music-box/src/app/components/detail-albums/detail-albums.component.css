@@ -22,14 +22,14 @@
     position: absolute;
     z-index: 9999;
   }
-  .centerNavBarTitle {
+.centerNavBarTitle {
     margin: auto;
   }
-  .navbar {
+.navbar {
     pointer-events:none
   }
 
-  @media only screen and (max-device-width : 500px) {
+@media only screen and (max-device-width : 500px) {
     .paddingCell {
         padding-left: 3%;
     }
@@ -38,6 +38,6 @@
     }
     
   }
-  .mat-card {
+.mat-card {
     padding: 0px;
 }

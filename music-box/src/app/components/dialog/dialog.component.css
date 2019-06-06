@@ -1,17 +1,15 @@
 .centerDialog{
     text-align: center;
 }
-/* fix this CSS */
 .centerButton{
     width: 100%;
-    
 }
 
 .dialogContent.mat-dialog-content {
     text-align: center;
 }
 
- .chips-container {
+.chips-container {
     position: relative;
     left: 3%;
     padding: 1%;
@@ -27,7 +25,6 @@ img.mat-card-image {
 }
 .no-tracks-class {
     font-size: 20px;
-
     font-weight: bold;
     color: darkgray;
 }

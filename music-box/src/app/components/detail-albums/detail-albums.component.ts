@@ -1,16 +1,11 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
-import {
-  MatDialog,
-  MatPaginator,
-  MatSnackBar,
-  PageEvent
-} from "@angular/material";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog, MatPaginator, MatSnackBar, PageEvent } from '@angular/material';
+import { ActivatedRoute } from '@angular/router';
 
-import { Album } from "../../models/album";
-import { DataService } from "../../services/data.service";
-import { DialogComponent } from "../dialog/dialog.component";
-import { NotificationDialog } from "../notification-dialog/notification-dialog";
+import { Album } from '../../models/album';
+import { DataService } from '../../services/data.service';
+import { DialogComponent } from '../dialog/dialog.component';
+import { NotificationDialog } from '../notification-dialog/notification-dialog';
 
 @Component({
   selector: "app-detail-albums",
@@ -114,7 +109,6 @@ export class DetailAlbumsComponent implements OnInit {
       err => {
         console.error(err);
         this.msgPrompt("error", "Error while fetching the data.");
-
         this.showSpinner = false;
       }
     );

@@ -1,4 +1,4 @@
-.marginLeft{
+.tableMarginLeft{
   margin:auto;
   width: 65.5%
 }
@@ -8,14 +8,10 @@ table {
 img {
   border-radius: 50%;
 }
-.marginLeft{
-  margin:auto;
-  width: 65.5%
-}
 
 @media only screen and (max-device-width : 770px) 
 {
-  .marginLeft{
+  .tableMarginLeft{
     margin:auto;
     width: 100%;
   } 
