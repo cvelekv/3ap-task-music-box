@@ -23,12 +23,12 @@ export class SettingsComponent implements OnInit {
   constructor(private snackBar: MatSnackBar, private router: Router) {}
 
   ngOnInit() {
-    let storeNum = parseInt(localStorage.getItem("recentStore"));
+    const storeNum = parseInt(localStorage.getItem("recentStore"));
     this.selectedNumStore = storeNum;
-    let visibleNum = parseInt(localStorage.getItem("recentVisible"));
+    const visibleNum = parseInt(localStorage.getItem("recentVisible"));
 
     this.selectedNumVisible = visibleNum;
-    let visibleSettings = localStorage.getItem("showRecentBoolean");
+    const visibleSettings = localStorage.getItem("showRecentBoolean");
 
     if (visibleSettings === "true") {
       this.showRecentSearched = true;
