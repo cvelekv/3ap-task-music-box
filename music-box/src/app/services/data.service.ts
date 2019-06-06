@@ -1,10 +1,10 @@
-import { Artist } from "./../models/artist";
-import { PageEvent } from "@angular/material";
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { PageEvent } from '@angular/material';
+import { BehaviorSubject, Observable } from 'rxjs';
 
-import { AuthorizationService } from "./authorization.service";
+import { Artist } from './../models/artist';
+import { AuthorizationService } from './authorization.service';
 
 @Injectable({
   providedIn: "root"
@@ -18,66 +18,39 @@ export class DataService {
     private authorization: AuthorizationService
   ) {}
 
-  search(searchValue: string, params: PageEvent) {
+  search(searchValue: string, params: PageEvent):Observable<any> {
     // These are default values on search
-    let limit = params ? params.pageSize : "5";
-    let offset = params ? params.pageIndex : "0";
-
-    let url =
-      this.authorization.getBaseUrl() +
-      "/search?q=" +
-      searchValue +
-      "&type=artist" +
-      "&limit=" +
-      limit +
-      "&offset=" +
-      offset;
+    const limit = params ? params.pageSize : "5";
+    const offset = params ? params.pageIndex : "0";
+    const url = `${this.authorization.getBaseUrl()}/search?q=${searchValue}&type=artist&limit=${limit}&offset=${offset}`;
 
     return this.http.get(url);
   }
 
-  openArtistInfo(artist: Artist) {
-    let url = this.authorization.getBaseUrl() + "/artists/" + artist.id;
+  openArtistInfo(artist: Artist):Observable<any> {
+    const url = `${this.authorization.getBaseUrl()}/artists/${artist.id}`;
 
     return this.http.get(url);
   }
 
-  getAlbums(artistID: string, params: PageEvent) {
-    let limit = params ? params.pageSize : "5";
-    let offset = params ? params.pageIndex : "0";
-
-    let url =
-      this.authorization.getBaseUrl() +
-      "/artists/" +
-      artistID +
-      "/albums?" +
-      "limit=" +
-      limit +
-      "&offset=" +
-      offset;
+  getAlbums(artistID: string, params: PageEvent):Observable<any> {
+    const limit = params ? params.pageSize : "5";
+    const offset = params ? params.pageIndex : "0";
+    const url = `${this.authorization.getBaseUrl()}/artists/${artistID}/albums?limit=${limit}&offset=${offset}`;
 
     return this.http.get(url);
   }
 
   getAlbumTracks(album) {
-    let url =
-      this.authorization.getBaseUrl() + "/albums/" + album.id + "/tracks";
+    const url = `${this.authorization.getBaseUrl()}/albums/${album.id}/tracks`;
 
     return this.http.get(url);
   }
 
-  getReleases(countryID: string, params: PageEvent) {
-    let limit = params ? params.pageSize : "5";
-    let offset = params ? params.pageIndex : "0";
-
-    let url =
-      this.authorization.getBaseUrl() +
-      "/browse/new-releases?country=" +
-      countryID +
-      "&limit=" +
-      limit +
-      "&offset=" +
-      offset;
+  getReleases(countryID: string, params: PageEvent):Observable<any> {
+    const limit = params ? params.pageSize : "5";
+    const offset = params ? params.pageIndex : "0";
+    const url = `${this.authorization.getBaseUrl()}/browse/new-releases?country=${countryID}&limit=${limit}&offset=${offset}`;
 
     return this.http.get(url);
   }
