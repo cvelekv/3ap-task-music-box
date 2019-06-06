@@ -15,6 +15,8 @@ import { SearchComponent } from './components/search/search.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { WrapperComponent } from './components/wrapper/wrapper.component';
 import { AuthorizationService } from './services/authorization.service';
+import { DataService } from './services/data.service';
+import { StorageService } from './services/storage.service';
 import { MaterialModule } from './shared/material-module';
 import { SharedModule } from './shared/shared.module';
 
@@ -39,7 +41,7 @@ import { SharedModule } from './shared/shared.module';
     HttpClientModule,
     SharedModule
   ],
-  providers: [AuthorizationService],
+  providers: [AuthorizationService, DataService, StorageService],
   bootstrap: [AppComponent],
   entryComponents: [NotificationDialog, DialogComponent]
 })

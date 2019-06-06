@@ -5,6 +5,7 @@ import { DialogComponent } from '../dialog/dialog.component';
 import { NotificationDialog } from '../notification-dialog/notification-dialog';
 import { Artist } from './../../models/artist';
 import { DataService } from './../../services/data.service';
+import { StorageService } from './../../services/storage.service';
 
 @Component({
   selector: "search-component",
@@ -38,7 +39,8 @@ export class SearchComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private dataService: DataService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private storageService: StorageService
   ) {}
 
   ngOnInit() {
@@ -70,7 +72,7 @@ export class SearchComponent implements OnInit {
   //used localStorage to store values since I wanted to persist the data even after closing the window/tab, but to avoid creating and dealing with db
   //here I store parameters from settings page and recently viewed objects
   processLocalStorage(): void {
-    let retrievedObj = localStorage.getItem("recentlyObj");
+    let retrievedObj = this.storageService.getItemFromStorage("recentlyObj");
     {
       try {
         this.recentlyViewed =
@@ -80,7 +82,9 @@ export class SearchComponent implements OnInit {
       }
     }
 
-    let retrievedStorelimit = localStorage.getItem("recentStore");
+    let retrievedStorelimit = this.storageService.getItemFromStorage(
+      "recentStore"
+    );
     if (retrievedStorelimit) {
       try {
         this.recentlyStoreLimit = JSON.parse(retrievedStorelimit);
@@ -89,7 +93,9 @@ export class SearchComponent implements OnInit {
       }
     }
 
-    let retrievedViewLimit = localStorage.getItem("recentVisible");
+    let retrievedViewLimit = this.storageService.getItemFromStorage(
+      "recentVisible"
+    );
     if (retrievedViewLimit) {
       try {
         this.recentlyViewLimit = JSON.parse(retrievedViewLimit);
@@ -98,7 +104,9 @@ export class SearchComponent implements OnInit {
       }
     }
     try {
-      JSON.parse(localStorage.getItem("showRecentBoolean")) === true
+      JSON.parse(
+        this.storageService.getItemFromStorage("showRecentBoolean")
+      ) === true
         ? (this.showRecentBar = true)
         : (this.showRecentBar = false);
     } catch (error) {
@@ -113,14 +121,11 @@ export class SearchComponent implements OnInit {
       if (diff < 0) {
         for (let i = 0; i < Math.abs(diff); i++) {
           this.recentlyViewed.pop();
-          try {
-            localStorage.setItem(
-              "recentlyObj",
-              JSON.stringify(this.recentlyViewed)
-            );
-          } catch (error) {
-            console.error("Error while parsing JSON");
-          }
+
+          this.storageService.setObjToStorage(
+            "recentlyObj",
+            this.recentlyViewed
+          );
         }
       }
     }

@@ -3,6 +3,7 @@ import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 
 import { constants } from '../../models/constants';
+import { StorageService } from '../../services/storage.service';
 import { NotificationDialog } from '../notification-dialog/notification-dialog';
 
 @Component({
@@ -20,15 +21,25 @@ export class SettingsComponent implements OnInit {
   selectedNumStore: number;
   durationInSeconds: number = 2;
 
-  constructor(private snackBar: MatSnackBar, private router: Router) {}
+  constructor(
+    private snackBar: MatSnackBar,
+    private router: Router,
+    private storageService: StorageService
+  ) {}
 
   ngOnInit() {
-    const storeNum = parseInt(localStorage.getItem("recentStore"));
+    const storeNum = parseInt(
+      this.storageService.getItemFromStorage("recentStore")
+    );
     this.selectedNumStore = storeNum;
-    const visibleNum = parseInt(localStorage.getItem("recentVisible"));
+    const visibleNum = parseInt(
+      this.storageService.getItemFromStorage("recentVisible")
+    );
 
     this.selectedNumVisible = visibleNum;
-    const visibleSettings = localStorage.getItem("showRecentBoolean");
+    const visibleSettings = this.storageService.getItemFromStorage(
+      "showRecentBoolean"
+    );
 
     if (visibleSettings === "true") {
       this.showRecentSearched = true;
@@ -42,9 +53,15 @@ export class SettingsComponent implements OnInit {
       duration: this.durationInSeconds * 1000,
       data: { type: "notification", msg: "Settings succesfully saved" }
     });
-    localStorage.setItem("recentVisible", this.selectedNumVisible.toString());
-    localStorage.setItem("recentStore", this.selectedNumStore.toString());
-    localStorage.setItem(
+    this.storageService.setItemToStorage(
+      "recentVisible",
+      this.selectedNumVisible.toString()
+    );
+    this.storageService.setItemToStorage(
+      "recentStore",
+      this.selectedNumStore.toString()
+    );
+    this.storageService.setItemToStorage(
       "showRecentBoolean",
       this.showRecentSearched.toString()
     );
@@ -59,11 +76,11 @@ export class SettingsComponent implements OnInit {
       duration: this.durationInSeconds * 1000,
       data: { type: "notification", msg: "Settings cleared" }
     });
-    localStorage.setItem("recentVisible", "");
-    localStorage.setItem("recentStore", "");
+    this.storageService.setItemToStorage("recentVisible", "");
+    this.storageService.setItemToStorage("recentStore", "");
     localStorage.setItem(
       "showRecentBoolean",
-      this.showRecentSearched.toString()
+      this.storageService.setItemToStorage.toString()
     );
     this.router.navigate(["/search-page"]);
   }

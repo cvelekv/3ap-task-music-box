@@ -6,6 +6,7 @@ import { Album } from '../../models/album';
 import { DataService } from '../../services/data.service';
 import { DialogComponent } from '../dialog/dialog.component';
 import { NotificationDialog } from '../notification-dialog/notification-dialog';
+import { StorageService } from './../../services/storage.service';
 
 @Component({
   selector: "app-detail-albums",
@@ -31,7 +32,8 @@ export class DetailAlbumsComponent implements OnInit {
     private aRoute: ActivatedRoute,
     private dataService: DataService,
     private snackBar: MatSnackBar,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private storageService: StorageService
   ) {}
 
   ngOnInit() {
@@ -42,11 +44,11 @@ export class DetailAlbumsComponent implements OnInit {
     this.dataService.artistNameSet.subscribe(val => {
       this.artistName = val;
       if (this.artistName) {
-        this.setItemToStorage("artistName", this.artistName);
+        this.storageService.setItemToStorage("artistName", this.artistName);
       }
     });
     if (!this.artistName) {
-      this.artistName = this.getItemFromStorage("artistName");
+      this.artistName = this.storageService.getItemFromStorage("artistName");
     }
   }
 
@@ -78,14 +80,6 @@ export class DetailAlbumsComponent implements OnInit {
       duration: this.durationInSeconds * 1000,
       data: { type: type, msg: message }
     });
-  }
-
-  setItemToStorage(key: string, value: any): void {
-    localStorage.setItem(key, value.toString());
-  }
-
-  getItemFromStorage(key: string): string {
-    return localStorage.getItem(key);
   }
 
   openAlbumTracks(album: Album): void {

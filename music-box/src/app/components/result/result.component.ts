@@ -5,6 +5,7 @@ import { Artist } from '../../models/artist';
 import { DialogComponent } from '../dialog/dialog.component';
 import { NotificationDialog } from '../notification-dialog/notification-dialog';
 import { DataService } from './../../services/data.service';
+import { StorageService } from './../../services/storage.service';
 
 @Component({
   selector: "result-component",
@@ -45,7 +46,8 @@ export class ResultComponent implements OnInit {
   constructor(
     private dataService: DataService,
     public dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private storageService: StorageService
   ) {}
 
   ngOnInit() {
@@ -53,11 +55,13 @@ export class ResultComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
     }
     this.recentlyVisibleLimit = parseInt(
-      this.getItemFromStorage("recentVisible")
+      this.storageService.getItemFromStorage("recentVisible")
     );
-    this.recentlyStoreLimit = parseInt(this.getItemFromStorage("recentStore"));
+    this.recentlyStoreLimit = parseInt(
+      this.storageService.getItemFromStorage("recentStore")
+    );
 
-    let retrievedObj = this.getItemFromStorage("recentlyObj");
+    let retrievedObj = this.storageService.getItemFromStorage("recentlyObj");
     try {
       this.recentlyViewed =
         retrievedObj !== null ? JSON.parse(retrievedObj) : [];
@@ -88,7 +92,7 @@ export class ResultComponent implements OnInit {
   arrangeList(artist: Artist): void {
     let counters = this.recentlyViewed.filter(c => c.id !== artist.id);
     counters.unshift(artist);
-    this.setItemInStorage("recentlyObj", counters);
+    this.storageService.setObjToStorage("recentlyObj", counters);
   }
 
   addToRecentlyViewed(val: any): void {
@@ -108,20 +112,8 @@ export class ResultComponent implements OnInit {
       if (this.recentlyViewed.length > this.recentlyStoreLimit) {
         this.recentlyViewed.pop();
       }
-      this.setItemInStorage("recentlyObj", this.recentlyViewed);
+      this.storageService.setObjToStorage("recentlyObj", this.recentlyViewed);
     }
-  }
-
-  setItemInStorage(key: string, value: any): void {
-    try {
-      localStorage.setItem(key, JSON.stringify(value));
-    } catch (error) {
-      console.error("Error while parsing JSON.");
-    }
-  }
-
-  getItemFromStorage(key: string): string {
-    return localStorage.getItem(key);
   }
 
   openArtistInfo(artist: Artist): void {
