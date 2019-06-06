@@ -18,7 +18,6 @@ import { AuthorizationService } from './services/authorization.service';
 import { DataService } from './services/data.service';
 import { StorageService } from './services/storage.service';
 import { MaterialModule } from './shared/material-module';
-import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -38,8 +37,7 @@ import { SharedModule } from './shared/shared.module';
     FormsModule,
     MaterialModule,
     BrowserAnimationsModule,
-    HttpClientModule,
-    SharedModule
+    HttpClientModule
   ],
   providers: [AuthorizationService, DataService, StorageService],
   bootstrap: [AppComponent],
